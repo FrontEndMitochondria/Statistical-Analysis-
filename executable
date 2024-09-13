@@ -1,0 +1,22 @@
+import scipy.stats as stats
+import statsmodels.api as sm
+
+# Load the cleaned data
+df = pd.read_csv('cleaned_data.csv')
+
+# Hypothesis Testing - T-Test between two groups
+group1 = df[df['category'] == 0]['income']
+group2 = df[df['category'] == 1]['income']
+
+t_stat, p_val = stats.ttest_ind(group1, group2)
+print(f"T-Statistic: {t_stat}, P-Value: {p_val}")
+
+# Linear Regression Model
+X = df[['age', 'category_code']]
+y = df['income']
+
+X = sm.add_constant(X)
+model = sm.OLS(y, X).fit()
+
+# Print the summary of the regression
+print(model.summary())
